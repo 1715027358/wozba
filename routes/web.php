@@ -10,11 +10,24 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+//
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+//
+//Auth::routes();
 
-Route::get('/', function () {
-    return view('welcome');
+//Route::get('/home', 'HomeController@index')->name('home');
+//后台登录退出
+Route::group(['prefix' => 'admin'], function () {
+    Route::group(['middleware' => 'auth.admin'], function () {
+        Route::get('/', 'Admin\IndexController@index');
+    });
+
+    Route::get('login', 'Admin\LoginController@showLoginForm')->name('admin.login');
+    Route::post('login', 'Admin\LoginController@login');
+    Route::post('logout', 'Admin\LoginController@logout');
 });
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+
